@@ -20,6 +20,14 @@ spec:
       - name: cassandra
         image: cassandra:3.11.5
         imagePullPolicy: Always
+        command:
+          - bash
+          - -ec
+          - |
+            echo "Starting ${POD_NAME}"
+            chown cassandra:cassandra /cassandra_data
+            cp /tmp/cassandraconfig/cassandra.yaml /etc/cassandra/cassandra.yaml
+            docker-entrypoint.sh cassandra -f
         ports:
         - containerPort: 7000
           name: intra-node
@@ -75,6 +83,12 @@ spec:
         volumeMounts:
         - name: cassandra-data
           mountPath: /cassandra_data
+        - name: cassandraconfig
+          mountPath: /tmp/cassandraconfig
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: cassandra-config
   volumeClaimTemplates:
   - metadata:
       name: cassandra-data
