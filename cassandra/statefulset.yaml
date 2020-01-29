@@ -17,6 +17,10 @@ spec:
     spec:
       terminationGracePeriodSeconds: 1800
       containers:
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: cassandra-config
       - name: cassandra
         image: cassandra:3.11.5
         imagePullPolicy: Always
@@ -85,10 +89,6 @@ spec:
           mountPath: /cassandra_data
         - name: cassandraconfig
           mountPath: /tmp/cassandraconfig
-        volumes:
-        - configMap:
-            defaultMode: 420
-            name: cassandra-config
   volumeClaimTemplates:
   - metadata:
       name: cassandra-data
