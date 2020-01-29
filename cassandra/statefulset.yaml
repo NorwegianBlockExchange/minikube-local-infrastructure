@@ -89,6 +89,7 @@ spec:
       - configMap:
           defaultMode: 420
           name: cassandra-config
+        name: cassandraconfig
   volumeClaimTemplates:
   - metadata:
       name: cassandra-data
